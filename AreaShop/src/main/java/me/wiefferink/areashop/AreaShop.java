@@ -1,8 +1,30 @@
 package me.wiefferink.areashop;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.HandlerList;
+import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+
 import me.wiefferink.areashop.interfaces.AreaShopInterface;
 import me.wiefferink.areashop.interfaces.BukkitInterface;
 import me.wiefferink.areashop.interfaces.WorldEditInterface;
@@ -20,28 +42,6 @@ import me.wiefferink.bukkitdo.Do;
 import me.wiefferink.interactivemessenger.processing.Message;
 import me.wiefferink.interactivemessenger.source.LanguageManager;
 import net.milkbowl.vault.economy.Economy;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
-import org.bukkit.permissions.Permission;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Main class for the AreaShop plugin.
@@ -177,20 +177,20 @@ public final class AreaShop extends JavaPlugin implements AreaShopInterface {
 					weVersion = "5";
 				} else if(worldEdit.getDescription().getVersion().startsWith("6.")) {
 					weVersion = "6";
-				} else if (worldEdit.getDescription().getVersion().startsWith("7.0.0") && "beta-01".equalsIgnoreCase(weBeta)) {
-					weVersion = "7_beta_1";
-				} else if (worldEdit.getDescription().getVersion().startsWith("7.0.0") && "beta-04".equalsIgnoreCase(weBeta)) {
-					// beta-02 and beta-03 also have the new vector system already
-					weVersion = "7_beta_4";
-				} else if (worldEdit.getDescription().getVersion().startsWith("7.2.0")) {
-					weVersion = "7_2_0_beta";
+				// } else if (worldEdit.getDescription().getVersion().startsWith("7.0.0") && "beta-01".equalsIgnoreCase(weBeta)) {
+				// 	weVersion = "7_beta_1";
+				// } else if (worldEdit.getDescription().getVersion().startsWith("7.0.0") && "beta-04".equalsIgnoreCase(weBeta)) {
+				// 	// beta-02 and beta-03 also have the new vector system already
+				// 	weVersion = "7_beta_4";
+				} else if (worldEdit.getDescription().getVersion().startsWith("7.2.")) {
+					weVersion = "7_2";
 				} else {
-					warn("Parsing the WorldEdit version failed, assuming version 7.2.0: ", rawWeVersion);
-					weVersion = "7_2_0_beta";
+					warn("Parsing the WorldEdit version failed, assuming latest version 7.2.0: ", rawWeVersion);
+					weVersion = "7_2";
 				}
 			} catch (Exception e) { // If version detection fails, at least try to load the latest version
-				warn("Parsing the WorldEdit version failed, assuming version 7_2_0: ", rawWeVersion);
-				weVersion = "7_2_0_beta";
+				warn("Parsing the WorldEdit version failed, assuming latest version 7_2_0: ", rawWeVersion);
+				weVersion = "7_2";
 			}
 
 			weVersion = "WorldEditHandler" + weVersion;
@@ -261,19 +261,19 @@ public final class AreaShop extends JavaPlugin implements AreaShopInterface {
 					} else {
 						wgVersion = "6_1_3";
 					}
-				} else if (worldGuard.getDescription().getVersion().startsWith("7.0.0") && "beta-01".equalsIgnoreCase(weBeta)) {
-					// When using WorldEdit beta-01, we need to use the WorldGuard variant with the old vector system
-					wgVersion = "7_beta_1";
-				} else if (worldGuard.getDescription().getVersion().startsWith("7.0.0") && "beta-02".equalsIgnoreCase(weBeta)) {
+				// } else if (worldGuard.getDescription().getVersion().startsWith("7.0.0") && "beta-01".equalsIgnoreCase(weBeta)) {
+				// 	// When using WorldEdit beta-01, we need to use the WorldGuard variant with the old vector system
+				// 	wgVersion = "7_beta_1";
+				} else if (worldGuard.getDescription().getVersion().startsWith("7.0.")) {
 					// Even though the WorldGuard file is called beta-02, the reported version is still beta-01!
-					wgVersion = "7_beta_2";
+					wgVersion = "7";
 				} else {
-					wgVersion = "7_0_4_beta1";
-					warn("Parsing the WorldGuard version failed, assuming version 7_0_4_beta1: ", rawWgVersion);
+					wgVersion = "7";
+					warn("Parsing the WorldGuard version failed, assuming version 7_0_0: ", rawWgVersion);
 				}
 			} catch(Exception e) { // If version detection fails, at least try to load the latest version
-				warn("Parsing the WorldGuard version failed, assuming version 7_0_4_beta1: ", rawWgVersion);
-				wgVersion = "7_0_4_beta1";
+				warn("Parsing the WorldGuard version failed, assuming version 7_0_0: ", rawWgVersion);
+				wgVersion = "7";
 			}
 
 			wgVersion = "WorldGuardHandler" + wgVersion;
