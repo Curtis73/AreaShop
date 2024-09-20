@@ -40,13 +40,17 @@
 	  <url>https://repo.codemc.org/repository/maven-public</url>
 	</repository>
     <repository>
-        <id>sk89q-repo</id>
-        <url>https://maven.enginehub.org/repo/</url>
+      <id>sk89q-repo</id>
+      <url>https://maven.enginehub.org/repo/</url>
     </repository>
     <repository>
-        <id>spigot-repo</id>
-        <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-    </repository>	
+      <id>spigot-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+      <id>placeholderapi</id>
+      <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+    </repository>
   </repositories>
 
   <properties>
