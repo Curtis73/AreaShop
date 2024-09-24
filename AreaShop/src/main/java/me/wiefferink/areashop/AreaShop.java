@@ -35,6 +35,7 @@ import me.wiefferink.areashop.managers.FeatureManager;
 import me.wiefferink.areashop.managers.FileManager;
 import me.wiefferink.areashop.managers.Manager;
 import me.wiefferink.areashop.managers.SignLinkerManager;
+import me.wiefferink.areashop.tools.PlaceholderExtension;
 //import me.wiefferink.areashop.tools.Analytics;
 //import me.wiefferink.areashop.tools.GithubUpdateCheck;
 import me.wiefferink.areashop.tools.Utils;
@@ -363,6 +364,11 @@ public final class AreaShop extends JavaPlugin implements AreaShopInterface {
 		managers.add(fileManager);
 		boolean loadFilesResult = fileManager.loadFiles(false);
 		error = error || !loadFilesResult;
+
+		// Load the placeholders
+		if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) { 
+			new PlaceholderExtension(this).register();
+		}
 
 		// Print loaded version of WG and WE in debug
 		if(wgVersion != null) {
